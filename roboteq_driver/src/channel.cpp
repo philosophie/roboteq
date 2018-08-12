@@ -29,7 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "ros/ros.h"
 #include "roboteq_msgs/Feedback.h"
 #include "roboteq_msgs/Command.h"
-
+#include "geometry_msgs/Twist.h"
 
 namespace roboteq {
 
@@ -38,12 +38,20 @@ Channel::Channel(int channel_num, std::string ns, Controller* controller) :
   last_mode_(255)
 {
   sub_cmd_ = nh_.subscribe("cmd", 1, &Channel::cmdCallback, this);
+  sub_cmd_vel_ = nh_.subscribe("cmd_vel", 1, &Channel::cmdVelCallback, this);
   pub_feedback_ = nh_.advertise<roboteq_msgs::Feedback>("feedback", 1);
 
   // Don't start this timer until we've received the first motion command, otherwise it
   // can interfere with code download on device startup.
   timeout_timer_ = nh_.createTimer(ros::Duration(0.1), &Channel::timeoutCallback, this);
   timeout_timer_.stop();
+}
+
+void Channel::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& cmd_msg)
+{
+  // TODO: translate twist into roboteq_msgs::Command and send to
+  //       Channel::cmdCallback, which will handle communicating
+  //       with the Roboteq.
 }
 
 void Channel::cmdCallback(const roboteq_msgs::Command& command)

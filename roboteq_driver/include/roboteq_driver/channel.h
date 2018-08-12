@@ -26,6 +26,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define ROBOTEQ_CHANNEL
 
 #include "ros/ros.h"
+#include "geometry_msgs/Twist.h"
 
 namespace roboteq_msgs {
   ROS_DECLARE_MESSAGE(Command);
@@ -87,6 +88,7 @@ protected:
   }
 
   void cmdCallback(const roboteq_msgs::Command&);
+  void cmdVelCallback(const geometry_msgs::Twist::ConstPtr&);
   void timeoutCallback(const ros::TimerEvent&);
 
   ros::NodeHandle nh_;
@@ -95,6 +97,7 @@ protected:
   float max_rpm_;
 
   ros::Subscriber sub_cmd_;
+  ros::Subscriber sub_cmd_vel_;
   ros::Publisher pub_feedback_;
   ros::Timer timeout_timer_;
 
