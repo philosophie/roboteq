@@ -60,6 +60,8 @@ protected:
     return x * (2 * M_PI) / 60;
   }
 
+  static int encoder_ppr_ = 2048;
+
   /**
    * Conversion of radians to encoder ticks. Note that this assumes a
    * 1024-line quadrature encoder (hence 4096).
@@ -69,7 +71,7 @@ protected:
    */
   static double to_encoder_ticks(double x)
   {
-    return x * 4096 / (2 * M_PI);
+    return (x * encoder_ppr_) / (2 * M_PI);
   }
 
   /**
@@ -81,7 +83,7 @@ protected:
    */
   static double from_encoder_ticks(double x)
   {
-    return x * (2 * M_PI) / 4096;
+    return x * (2 * M_PI) / encoder_ppr_;
   }
 
   void cmdCallback(const roboteq_msgs::Command&);
