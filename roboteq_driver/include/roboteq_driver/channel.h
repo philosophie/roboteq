@@ -60,7 +60,7 @@ protected:
     return x * (2 * M_PI) / 60;
   }
 
-  static int encoder_ppr_ = 2048;
+  static const int encoder_ppr_ = 2048;
 
   /**
    * Conversion of radians to encoder ticks. Note that this assumes a
